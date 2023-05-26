@@ -23,6 +23,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
         memory.content.length > 115
           ? memory.content.substring(0, 115).concat('...')
           : memory.content,
+      createdAt: memory.createdAt,
     }))
   })
 
