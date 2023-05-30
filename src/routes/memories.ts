@@ -19,6 +19,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
     return memories.map((memory) => ({
       id: memory.id,
       coverUrl: memory.coverUrl,
+      typeMedia:  memory.typeMedia,
       excert:
         memory.content.length > 115
           ? memory.content.substring(0, 115).concat('...')
@@ -51,15 +52,17 @@ export async function memoriesRoutes(app: FastifyInstance) {
     const bodySchema = z.object({
       coverUrl: z.string(),
       content: z.string(),
+      typeMedia: z.string(),
       isPublic: z.coerce.boolean().default(false),
     })
 
-    const { content, coverUrl, isPublic } = bodySchema.parse(request.body)
+    const { content, coverUrl, isPublic, typeMedia } = bodySchema.parse(request.body)
 
     const newMemory = await prisma.memory.create({
       data: {
         content,
         coverUrl,
+        typeMedia,
         isPublic,
         userId: request.user.sub,
       },
